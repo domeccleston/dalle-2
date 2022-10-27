@@ -1,5 +1,6 @@
 const PRODUCTION_URL = "https://vercel-serverless-timeout-one.vercel.app";
 const MY_SLOW_API = `${PRODUCTION_URL}/api/timeout`;
+const QSTASH_URL = `https://qstash.upstash.io/v1/publish/`;
 
 export default async function handler(req, res) {
   try {
