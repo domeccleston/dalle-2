@@ -11,8 +11,9 @@ export default async function handler(req, res) {
       },
       method: "POST",
     });
-    const { messageId } = await qstashRequest.json();
-    res.status(202).json({ message: `Enqueued new task with ID ${messageId}` });
+    const response = await qstashRequest.json();
+    console.log(response);
+    res.status(202).json({ message: `Enqueued new task with ID ${response?.messageId}` });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
