@@ -8,7 +8,7 @@ export default async function handler(req, res) {
       headers: {
         "content-type": "application/json",
         Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
-        "Upstash-Callback": `${process.env.VERCEL_URL}/api/callback`
+        "Upstash-Callback": `https://${process.env.VERCEL_URL}/api/callback`
       },
       method: "POST",
     });
