@@ -1,5 +1,5 @@
 {
-  "name": "vercel-serverless-timeout",
+  "name": "qstash-queue",
   "private": true,
   "scripts": {
     "dev": "next dev",
