@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
-  console.log(req.body);
-  res.status(200).send("received");
+  const response = atob(req.body);
+  console.log(response);
+  return res.status(200).send();
 }
