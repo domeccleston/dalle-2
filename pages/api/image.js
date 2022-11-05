@@ -1,5 +1,6 @@
 const QSTASH = `https://qstash.upstash.io/v1/publish/`;
 const DALL_E = "https://api.openai.com/v1/images/generations";
+const VERCEL_URL = "https://qstash-queue.vercel.app/";
 
 export default async function handler(req, res) {
   const { prompt } = req.query;
@@ -10,7 +11,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
         "upstash-forward-Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
-        "Upstash-Callback": `https://${process.env.VERCEL_URL}/api/callback`,
+        "Upstash-Callback": `${VERCEL_URL}/api/callback`,
       },
       body: JSON.stringify({
         prompt,
@@ -19,7 +20,7 @@ export default async function handler(req, res) {
       }),
     });
     const json = await response.json();
-    return res.status(202).json(`Enqueued new task with ID ${json.messageId}`);
+    return res.status(202).json({ id: json.messageId });
   } catch (error) {
     res
       .status(500)
