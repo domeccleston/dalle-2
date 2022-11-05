@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   const { body } = req;
   const decoded = atob(body.body);
   console.log(decoded);
-  console.log(body);
+  console.log(body.body);
   console.log(redis);
   return res.status(200).send(decoded);
 }
