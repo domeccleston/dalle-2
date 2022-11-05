@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       }),
     });
     const json = await response.json();
-    return res.status(202).json(`Enqueued new task with ID ${messageId}`);
+    return res.status(202).json(`Enqueued new task with ID ${json.messageId}`);
   } catch (error) {
     res
       .status(500)
