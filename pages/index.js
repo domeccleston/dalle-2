@@ -83,7 +83,7 @@ export default function Home() {
               className={cn(
                 "duration-700 ease-in-out mt-10 rounded-md shadow-md",
                 isImageLoading
-                  ? "grayscale blur-2xl"
+                  ? "grayscale blur-xl"
                   : "grayscale-0 blur-0"
               )}
               src={image}
