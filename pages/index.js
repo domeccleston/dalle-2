@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import cn from "classnames";
+import { Toaster, toast } from "react-hot-toast";
 
 import { useInterval } from "../hooks/use-interval";
 
@@ -28,6 +29,7 @@ export default function Home() {
   async function submitForm(e) {
     e.preventDefault();
     setLoading(true);
+    toast("Generating your image...", { position: "top-center" });
     const response = await fetch(`/api/image?prompt=${prompt}`);
     const json = await response.json();
     setMessageId(json.id);
@@ -36,11 +38,15 @@ export default function Home() {
 
   return (
     <div className="antialiased mx-auto px-4 py-20 h-screen bg-gray-100">
+      <Toaster />
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-5xl tracking-tighter pb-10 font-bold text-gray-800">
           Dall-E 2 image generator
         </h1>
-        <form className="flex w-full sm:w-auto flex-col sm:flex-row" onSubmit={submitForm}>
+        <form
+          className="flex w-full sm:w-auto flex-col sm:flex-row"
+          onSubmit={submitForm}
+        >
           <input
             className="shadow-sm text-gray-700 rounded-sm px-3 py-2 mb-4 sm:mb-0 sm:min-w-[600px]"
             type="text"
@@ -48,7 +54,7 @@ export default function Home() {
             onChange={(e) => setPrompt(e.target.value)}
           />
           <button
-            className="shadow-sm sm:w-[90px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
+            className="shadow-sm sm:w-[100px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
             type="Submit"
           >
             {loading && (
@@ -73,24 +79,38 @@ export default function Home() {
                 ></path>
               </svg>
             )}
-            {!loading ? 'Submit' : ''}
+            {!loading ? "Generate" : ""}
           </button>
         </form>
         <div className="flex items-center justify-center">
-          {image && (
+          {image ? (
             <Image
               alt={`Dall-E representation of: ${prompt}`}
               className={cn(
                 "duration-700 ease-in-out mt-10 rounded-md shadow-md",
-                isImageLoading
-                  ? "grayscale blur-xl"
-                  : "grayscale-0 blur-0"
+                isImageLoading ? "grayscale blur-xl" : "grayscale-0 blur-0"
               )}
               src={image}
               width="400"
               height="400"
               onLoadingComplete={() => setIsImageLoading(false)}
             />
+          ) : (
+            <div
+              className={cn(
+                "relative overflow-hidden rounded-2xl bg-white/5 shadow-xl mt-10 shadow-black/5",
+                {
+                  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transparent":
+                    loading,
+                }
+              )}
+            >
+              <div className="w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center">
+                <p className="uppercase text-sm text-gray-400">
+                  {loading ? "Generating image...." : "No image selected"}
+                </p>
+              </div>
+            </div>
           )}
         </div>
       </div>
