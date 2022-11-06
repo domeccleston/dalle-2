@@ -10,7 +10,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [messageId, setMessageId] = useState("");
   const [image, setImage] = useState(null);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+  const [canShowImage, setCanShowImage] = useState(false);
 
   useInterval(
     async () => {
@@ -19,7 +19,6 @@ export default function Home() {
       console.log(json);
       if (res.status === 200) {
         setLoading(false);
-        setIsImageLoading(true);
         setImage(json.data[0].url);
       }
     },
@@ -35,6 +34,8 @@ export default function Home() {
     setMessageId(json.id);
     console.log(messageId);
   }
+
+  const showLoadingState = loading || (image && !canShowImage);
 
   return (
     <div className="antialiased mx-auto px-4 py-20 h-screen bg-gray-100">
@@ -57,7 +58,7 @@ export default function Home() {
             className="shadow-sm sm:w-[100px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
             type="Submit"
           >
-            {loading && (
+            {showLoadingState && (
               <svg
                 className="animate-spin h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -79,39 +80,48 @@ export default function Home() {
                 ></path>
               </svg>
             )}
-            {!loading ? "Generate" : ""}
+            {!showLoadingState ? "Generate" : ""}
           </button>
         </form>
-        <div className="flex items-center justify-center">
-          {image ? (
+        <div className="relative flex items-center justify-center">
+          {image && (
             <Image
               alt={`Dall-E representation of: ${prompt}`}
               className={cn(
-                "duration-700 ease-in-out mt-10 rounded-md shadow-md",
-                isImageLoading ? "grayscale blur-xl" : "grayscale-0 blur-0"
+                "opacity-0 duration-1000 ease-in-out mt-10 rounded-md shadow-md",
+                { "opacity-100": canShowImage }
               )}
               src={image}
               width="400"
               height="400"
-              onLoadingComplete={() => setIsImageLoading(false)}
+              onLoadingComplete={() => {
+                setCanShowImage(true);
+              }}
             />
-          ) : (
+          )}
+
+          <div
+            className={cn(
+              "absolute top-0.5 overflow-hidden rounded-2xl bg-white/5 shadow-xl mt-10 shadow-black/5",
+              {
+                "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transparent":
+                  showLoadingState,
+                "opacity-0 shadow-none": canShowImage,
+              }
+            )}
+          >
             <div
               className={cn(
-                "relative overflow-hidden rounded-2xl bg-white/5 shadow-xl mt-10 shadow-black/5",
-                {
-                  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transparent":
-                    loading,
-                }
+                "w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center"
               )}
             >
-              <div className="w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center">
-                <p className="uppercase text-sm text-gray-400">
-                  {loading ? "Generating image...." : "No image selected"}
-                </p>
-              </div>
+              <p className="uppercase text-sm text-gray-400">
+                {showLoadingState
+                  ? "Generating image...."
+                  : "No image selected"}
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

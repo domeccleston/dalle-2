@@ -12,11 +12,11 @@ module.exports = {
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
-    },
-    keyframes: {
-      shimmer: {
-        "100%": {
-          transform: "translateX(100%)",
+      keyframes: {
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
         },
       },
     },

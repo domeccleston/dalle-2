@@ -1,6 +1,6 @@
 const QSTASH = `https://qstash.upstash.io/v1/publish/`;
 const DALL_E = "https://api.openai.com/v1/images/generations";
-const VERCEL_URL = "https://qstash-queue.vercel.app/";
+const VERCEL_URL = "https://qstash-queue.vercel.app";
 
 export default async function handler(req, res) {
   const { prompt } = req.query;
