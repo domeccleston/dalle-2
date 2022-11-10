@@ -1,2 +1,1 @@
-Example Next.js app showing how you can proxy API routes to qstash to get around Vercel's serverless execution timeout limit
-AC 
+Dall-E 2 AI art generator. This proxies calls to the OpenAI API via QStash in /api/image. QStash sends responses to /api/callback, where they're persisted to Upstash Redis. The client polls /api/callback and displays the image once it's available.
