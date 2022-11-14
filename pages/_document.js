@@ -11,7 +11,7 @@ export default function Document() {
       <meta name="description" content="Generate text-to-image art via OpenAI's Dall E 2 model." />
       <meta name="keywords" content="AI, text2image, dalle, dall-e, openai" />
       <meta name="author" content="John Doe" />
-      <body>
+      <body className="bg-gray-100">
         <Main />
         <NextScript />
       </body>
