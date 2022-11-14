@@ -16,7 +16,6 @@ export default function Home() {
     async () => {
       const res = await fetch(`/api/poll?id=${messageId}`);
       const json = await res.json();
-      console.log(json);
       if (res.status === 200) {
         setLoading(false);
         setImage(json.data[0].url);
@@ -32,7 +31,6 @@ export default function Home() {
     const response = await fetch(`/api/image?prompt=${prompt}`);
     const json = await response.json();
     setMessageId(json.id);
-    console.log(messageId);
   }
 
   const showLoadingState = loading || (image && !canShowImage);
