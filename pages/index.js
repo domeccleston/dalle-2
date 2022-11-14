@@ -43,7 +43,7 @@ export default function Home() {
           Dall-E 2 image generator
         </h1>
         <form
-          className="flex w-full sm:w-auto flex-col sm:flex-row"
+          className="flex w-full sm:w-auto flex-col sm:flex-row mb-10"
           onSubmit={submitForm}
         >
           <input
@@ -58,49 +58,50 @@ export default function Home() {
           >
             {showLoadingState && (
               <svg
-              className="animate-spin h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
             )}
             {!showLoadingState ? "Generate" : ""}
           </button>
         </form>
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex w-full items-center justify-center">
           {image && (
-            <Image
-              alt={`Dall-E representation of: ${prompt}`}
-              className={cn(
-                "opacity-0 duration-1000 ease-in-out mt-10 rounded-md shadow-md",
-                { "opacity-100": canShowImage }
-              )}
-              src={image}
-              width="400"
-              height="400"
-              onLoadingComplete={() => {
-                setCanShowImage(true);
-              }}
-            />
+            <div className="w-full sm:w-[400px] h-[400px] rounded-md shadow-md relative">
+              <Image
+                alt={`Dall-E representation of: ${prompt}`}
+                className={cn(
+                  "opacity-0 duration-1000 ease-in-out rounded-md shadow-md h-full object-cover sm:object-none",
+                  { "opacity-100": canShowImage }
+                )}
+                src={image}
+                fill={true}
+                onLoadingComplete={() => {
+                  setCanShowImage(true);
+                }}
+              />
+            </div>
           )}
 
           <div
             className={cn(
-              "absolute top-0.5 overflow-hidden rounded-2xl bg-white/5 shadow-xl mt-10 shadow-black/5",
+              "w-full sm:w-[400px] absolute top-0.5 overflow-hidden rounded-2xl bg-white/5 shadow-xl shadow-black/5",
               {
                 "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transparent":
                   showLoadingState,
@@ -110,7 +111,7 @@ export default function Home() {
           >
             <div
               className={cn(
-                "w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center"
+                "w-full sm:w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center"
               )}
             >
               <p className="uppercase text-sm text-gray-400">
