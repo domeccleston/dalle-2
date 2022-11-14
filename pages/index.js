@@ -53,7 +53,7 @@ export default function Home() {
             onChange={(e) => setPrompt(e.target.value)}
           />
           <button
-            className="shadow-sm sm:w-[100px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
+            className="min-h-[40px] shadow-sm sm:w-[100px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
             type="Submit"
           >
             {showLoadingState && (
@@ -87,7 +87,7 @@ export default function Home() {
               <Image
                 alt={`Dall-E representation of: ${prompt}`}
                 className={cn(
-                  "opacity-0 duration-1000 ease-in-out rounded-md shadow-md h-full object-cover sm:object-none",
+                  "opacity-0 duration-1000 ease-in-out rounded-md shadow-md h-full object-cover",
                   { "opacity-100": canShowImage }
                 )}
                 src={image}
