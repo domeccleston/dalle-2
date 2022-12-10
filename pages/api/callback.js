@@ -7,10 +7,10 @@ const redis = new Redis({
 
 export default async function handler(req, res) {
   const { body } = req;
-  console.log(body)
+  console.log(body);
   try {
     const decoded = atob(body.body);
-    console.log(decoded)
+    console.log(decoded);
     const data = await redis.set(body.sourceMessageId, decoded);
     console.log(data);
     return res.status(200).send(decoded);

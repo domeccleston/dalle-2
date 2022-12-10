@@ -1,8 +1,7 @@
-import { useState } from "react";
-import Image from "next/image";
 import cn from "classnames";
-import { Toaster, toast } from "react-hot-toast";
-
+import Image from "next/image";
+import { useState } from "react";
+import { toast, Toaster } from "react-hot-toast";
 import { useInterval } from "../hooks/use-interval";
 
 export default function Home() {
