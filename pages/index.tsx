@@ -3,26 +3,16 @@ import Image from "next/image";
 import cn from "classnames";
 import { Toaster, toast } from "react-hot-toast";
 
-import { useInterval } from "../hooks/use-interval";
+import { useResult } from "../hooks/use-result";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [messageId, setMessageId] = useState("");
   const [image, setImage] = useState(null);
   const [canShowImage, setCanShowImage] = useState(false);
 
-  useInterval(
-    async () => {
-      const res = await fetch(`/api/poll?id=${messageId}`);
-      const json = await res.json();
-      if (res.status === 200) {
-        setLoading(false);
-        setImage(json.data[0].url);
-      }
-    },
-    loading ? 1000 : null
-  );
+  const { setId, loading, setLoading, result } = useResult();
+
+  console.log(result);
 
   async function submitForm(e) {
     e.preventDefault();
@@ -30,7 +20,7 @@ export default function Home() {
     toast("Generating your image...", { position: "top-center" });
     const response = await fetch(`/api/image?prompt=${prompt}`);
     const json = await response.json();
-    setMessageId(json.id);
+    setId(json.id);
   }
 
   const showLoadingState = loading || (image && !canShowImage);
