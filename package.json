@@ -1,5 +1,5 @@
 {
-  "name": "qstash-queue",
+  "name": "dalle-2-generator",
   "private": true,
   "scripts": {
     "dev": "next dev",

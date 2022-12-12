@@ -1,20 +1,16 @@
-import { Redis } from "@upstash/redis";
+import { NextApiRequest, NextApiResponse } from "next";
+import redis from "../../utils/redis";
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
-
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { body } = req;
-  console.log(body)
   try {
     const decoded = atob(body.body);
-    console.log(decoded)
-    const data = await redis.set(body.sourceMessageId, decoded);
-    console.log(data);
+    await redis.set(body.sourceMessageId, decoded);
     return res.status(200).send(decoded);
   } catch (error) {
-    console.error(error);
+    return res.status(500).json({ error });
   }
 }

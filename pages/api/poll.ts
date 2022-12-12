@@ -1,12 +1,11 @@
-import { Redis } from "@upstash/redis";
+import { NextApiRequest, NextApiResponse } from "next";
+import redis from "../../utils/redis";
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
-
-export default async function handler(req, res) {
-  const { id } = req.query;
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { id }: any = req.query;
   try {
     const data = await redis.get(id);
     if (!data) return res.status(404).json({ message: "No data found" });
