@@ -11,6 +11,7 @@ export default function Home() {
 
   const { setId, loading, setLoading, result } = useResult();
 
+  // @ts-ignore
   const image = result?.data[0]?.url;
 
   async function submitForm(e) {
