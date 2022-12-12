@@ -9,20 +9,15 @@ export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [canShowImage, setCanShowImage] = useState(false);
 
-  const { setId, loading, setLoading, result } = useResult();
-
-  // @ts-ignore
-  const image = result?.data[0]?.url;
+  const { generate, loading, result } = useResult();
 
   async function submitForm(e) {
     e.preventDefault();
-    setLoading(true);
-    toast("Generating your image...", { position: "top-center" });
-    const response = await fetch(`/api/image?prompt=${prompt}`);
-    const json = await response.json();
-    console.log(json);
-    setId(json.id);
+    generate(`/api/image?prompt=${prompt}`);
   }
+
+  //@ts-ignore
+  const image = result?.data[0]?.url;
 
   const showLoadingState = loading || (image && !canShowImage);
 

@@ -34,16 +34,24 @@ export const useInterval = (callback, delay) => {
 export const useResult = (interval = 1000) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
-  const [id, setId] = useState();
+  const [options, setOptions] = useState();
+  const [_id, setId] = useState();
+
+  async function generate(path: string) {
+    setLoading(true);
+    setOptions(options);
+    const { id } = await (await fetch(path)).json();
+    setId(id);
+  }
 
   useInterval(async () => {
-    const pollingEndpoint = await fetch(`https://qstash-proxy.vercel.app/api/poll?id=${id}`);
-    const json = await pollingEndpoint.json();
-    if (pollingEndpoint.status === 200) {
+    const pollingResult = await fetch(`https://qstash-proxy.vercel.app/api/poll?id=${id}`);
+    const json = await pollingResult.json();
+    if (pollingResult.status === 200) {
       setLoading(false);
       setResult(json);
     }
   }, loading ? interval : null)
 
-  return { setId, loading, setLoading, result };
+  return { generate, loading, result };
 };
