@@ -54,7 +54,7 @@ export default function Home() {
           />
           <button
             className="min-h-[40px] shadow-sm sm:w-[100px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
-            type="Submit"
+            type="submit"
           >
             {showLoadingState && (
               <svg
