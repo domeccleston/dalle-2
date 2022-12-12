@@ -15,18 +15,17 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
-        <title>Dall-E 2 AI Image Generator</title>
         <meta
           name="description"
           content="Generate an AI-generated image with a description."
         />
         <meta
           property="og:image"
-          content="https://stable-diffusion-demo.vercel.app/ogimage.png"
+          content="https://dalle-2.vercel.app/ogimage.png"
         />
         <meta
           name="twitter:image"
-          content="https://stable-diffusion-demo.vercel.app/ogimage.png"
+          content="https://dalle-2.vercel.app/ogimage.png"
         />
         <meta
           property="og:description"
