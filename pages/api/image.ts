@@ -3,7 +3,7 @@ const QSTASH_PROXY = `https://qstash.upstash.io/v1/publish/`;
 export default async function handler(req, res) {
   const { prompt } = req.query;
   try {
-    const response = await fetch(`https://qstash-proxy-seven.vercel.app/api/queue`, {
+    const response = await fetch(`https://qstash-proxy.vercel.app/api/queue`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
