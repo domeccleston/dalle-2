@@ -19,18 +19,6 @@ export const useInterval = (callback, delay) => {
   }, [delay]);
 };
 
-// useInterval(
-//     async () => {
-//       const res = await fetch(`/api/poll?id=${messageId}`);
-//       const json = await res.json();
-//       if (res.status === 200) {
-//         setLoading(false);
-//         setImage(json.data[0].url);
-//       }
-//     },
-//     loading ? 1000 : null
-//   );
-
 export const useResult = (interval = 1000) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
@@ -45,7 +33,7 @@ export const useResult = (interval = 1000) => {
   }
 
   useInterval(async () => {
-    const pollingResult = await fetch(`https://qstash-proxy.vercel.app/api/poll?id=${id}`);
+    const pollingResult = await fetch(`https://qstash-proxy.vercel.app/api/poll?id=${_id}`);
     const json = await pollingResult.json();
     if (pollingResult.status === 200) {
       setLoading(false);
