@@ -17,8 +17,7 @@ export default async function handler(req, res) {
       }),
     });
     const json = await response.json();
-    console.log(json);
-    return res.status(202).json({ id: json.messageId });
+    return res.status(202).json({ id: json.id });
   } catch (error) {
     res
       .status(500)

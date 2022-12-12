@@ -7,12 +7,11 @@ import { useResult } from "../hooks/use-result";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [image, setImage] = useState(null);
   const [canShowImage, setCanShowImage] = useState(false);
 
   const { setId, loading, setLoading, result } = useResult();
 
-  console.log(result);
+  const image = result?.data[0]?.url;
 
   async function submitForm(e) {
     e.preventDefault();
