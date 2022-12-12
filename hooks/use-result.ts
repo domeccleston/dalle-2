@@ -37,7 +37,7 @@ export const useResult = (interval = 1000) => {
   const [id, setId] = useState();
 
   useInterval(async () => {
-    const pollingEndpoint = await fetch(`https://qstash-proxy.vercel.app/${id}`);
+    const pollingEndpoint = await fetch(`https://qstash-proxy.vercel.app/api/poll?id=${id}`);
     const json = await pollingEndpoint.json();
     if (pollingEndpoint.status === 200) {
       setLoading(false);
