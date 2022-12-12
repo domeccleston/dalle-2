@@ -2,7 +2,7 @@ import cn from "classnames";
 import Image from "next/image";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
-import { useInterval } from "../hooks/use-interval";
+import { useInterval } from "../utils/use-interval";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
@@ -53,7 +53,7 @@ export default function Home() {
           />
           <button
             className="min-h-[40px] shadow-sm sm:w-[100px] py-2 inline-flex justify-center font-medium items-center px-4 bg-green-600 text-gray-100 sm:ml-2 rounded-md hover:bg-green-700"
-            type="Submit"
+            type="submit"
           >
             {showLoadingState && (
               <svg
