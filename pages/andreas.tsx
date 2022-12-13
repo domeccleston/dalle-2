@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import cn from "classnames";
 import { Toaster, toast } from "react-hot-toast";
@@ -9,13 +9,31 @@ export default function Page() {
   const [prompt, setPrompt] = useState("");
   const [canShowImage, setCanShowImage] = useState(false);
 
-  const handle = async (args: { prompt: string }) => {
-    const res = await fetch(`/api/image?prompt=${args.prompt}`)
-    return await res.json()
-  }
 
-  const { create, loading, result } = useResult<{ prompt: string }, { data: { url: string }[] }>({ handle });
+  /**
+   * Advanced with custom fetcher
+   */
+  // const fetcher = async (args: { prompt: string }) => {
+  //   const res = await fetch(`/api/image?prompt=${args.prompt}`)
+  //   return await res.json()
+  // }
 
+  // const { create, loading, result, error } = useResult<{ prompt: string }, { data: { url: string }[] }>({ fetcher });
+
+
+  /**
+   * Simple with path
+   */
+  
+
+  const { create, loading, result, error } = useResult<{ prompt: string }, { data: { url: string }[] }>({ path: "/api/art" });
+
+  
+  useEffect(() => {
+    if (error) {
+      alert(error)
+    }
+  }, [error])
   async function submitForm(e) {
     e.preventDefault();
     await create({ prompt })

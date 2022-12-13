@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 
 
@@ -27,12 +27,12 @@ const useInterval = (callback: () => unknown, interval: number, enabled: boolean
 
 
 /**
- * The CreateHandler needs to be implemented by the user and is most likely just a simple fetch call 
+ * The Fetcher can be implemented by the user and is most likely just a simple fetch call 
  * to their own API.
  * 
  * The important part is that it must return an id 
  */
-type CreateHandler<TArgs> = (args: TArgs) => Promise<{ id: string }>
+type Fetcher<TArgs> = (args: TArgs) => Promise<{ id: string }>
 
 
 type UseResult<TArgs, TResult> = {
@@ -52,7 +52,7 @@ type Options<TArgs> = {
      * Polling interval in milliseconds
      */
     interval?: number
-    handle: CreateHandler<TArgs>,
+
 
     /**
      * Url to https://qstash-proxy.vercel.app
@@ -65,14 +65,21 @@ type Options<TArgs> = {
      * Stop polling after x milliseconds
      */
     timeout?: number
-
-}
+} &
+    ({
+        fetcher: Fetcher<TArgs>,
+        path?: never
+    } |
+    {
+        fetcher?: never,
+        path: string
+    })
 
 export function useResult<TArgs, TResult>({
-    interval = 5000,
+    interval = 2000,
     proxyUrl = "https://qstash-proxy.vercel.app",
-    handle,
-    timeout = 900_000 // 15min
+    timeout = 900_000,// 15min
+    ...opts
 }: Options<TArgs>): UseResult<TArgs, TResult> {
 
     /**
@@ -86,14 +93,42 @@ export function useResult<TArgs, TResult>({
     const [result, setResult] = useState<TResult | null>(null)
     const [id, setId] = useState<string | null>(null)
 
+
+
+
+    let fetcher: Fetcher<TArgs>
+    if ("fetcher" in opts) {
+        fetcher = opts.fetcher
+    } else {
+        fetcher = async (args: TArgs) => {
+            const res = await fetch(opts.path, {
+                method: "POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(args)
+            })
+            if (!res.ok) {
+                throw new Error(await res.text())
+            }
+
+            const json = await res.json() as { id?: string }
+            if (!json.id) {
+                throw new Error("Api must return an id")
+            }
+            return { id: json.id }
+        }
+    }
+
+
+
     /**
      * Small wrapper around the user provided createHandler to set states
      */
     const create = async (args: TArgs): Promise<void> => {
         try {
             setLoading(true)
-            const { id } = await handle(args)
-            console.log({ id })
+            const { id } = await fetcher(args)
             setId(id)
             setPoll(true)
         } catch (err) {
@@ -116,12 +151,14 @@ export function useResult<TArgs, TResult>({
         const timeoutId = setTimeout(() => {
             setPoll(false)
             setError("Timeout reached")
-        })
+            setLoading(false)
+        }, timeout)
         return () => clearTimeout(timeoutId)
     }, [poll])
 
     useInterval(async () => {
-        console.log("Interval ticking")
+        console.log("Polling..")
+
         const res = await fetch(`${proxyUrl}/api/poll?id=${id}`, {
             keepalive: true
         });
@@ -131,8 +168,6 @@ export function useResult<TArgs, TResult>({
             case 200:
                 // Result is available
                 const json = await res.json();
-                console.log({ json })
-
                 setLoading(false);
                 setResult(json);
                 setPoll(false)
