@@ -1,22 +1,46 @@
-const QSTASH_PROXY = `https://qstash.upstash.io/v1/publish/`;
+const QSTASH_PROXY = `https://qstash-proxy.vercel.app/api/queue`;
+
+class Task {
+  url: string;
+  headers: { [key: string]: string };
+  body: any;
+
+  constructor(url: string, config) {
+    this.url = url;
+    this.headers = config.headers;
+    this.body = config.body;
+  }
+
+  async enqueue() {
+    const res = await fetch(QSTASH_PROXY, {
+      method: 'POST',
+      headers: {
+        ...this.headers,
+        "Content-Type": "application/json",
+        "x-url": this.url,
+      },
+      body: JSON.stringify(this.body),
+    });
+    return res.json();
+  }
+}
 
 export default async function handler(req, res) {
   const { prompt } = req.query;
+
+  const task = new Task("https://api.openai.com/v1/images/generations", {
+    headers: {
+      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: {
+      prompt,
+      n: 1,
+      size: "1024x1024",
+    }
+  })
+
   try {
-    const response = await fetch(`https://qstash-proxy.vercel.app/api/queue`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-        "x-url": "https://api.openai.com/v1/images/generations",
-      },
-      body: JSON.stringify({
-        prompt,
-        n: 1,
-        size: "1024x1024",
-      }),
-    });
-    const json = await response.json();
+    const json = await task.enqueue();
     return res.status(202).json({ id: json.id });
   } catch (error) {
     res
