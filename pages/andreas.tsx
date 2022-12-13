@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import cn from "classnames";
-import { Toaster, toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 import { useResult } from "../lib/andreas";
 
 export default function Page() {
   const [prompt, setPrompt] = useState("");
   const [canShowImage, setCanShowImage] = useState(false);
-
 
   /**
    * Advanced with custom fetcher
@@ -20,23 +19,21 @@ export default function Page() {
 
   // const { create, loading, result, error } = useResult<{ prompt: string }, { data: { url: string }[] }>({ fetcher });
 
-
   /**
    * Simple with path
    */
 
-
   const { create, loading, result, error } = useResult({ path: "/api/art" });
-  console.log({ loading, error, result })
+  console.log({ loading, error, result });
 
   useEffect(() => {
     if (error) {
-      alert(error)
+      alert(error);
     }
-  }, [error])
+  }, [error]);
   async function submitForm(e) {
     e.preventDefault();
-    await create({ prompt })
+    await create({ prompt });
   }
 
   //@ts-ignore
@@ -79,12 +76,14 @@ export default function Page() {
                   r="10"
                   stroke="currentColor"
                   strokeWidth="4"
-                ></circle>
+                >
+                </circle>
                 <path
                   className="opacity-75"
                   fill="currentColor"
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
+                >
+                </path>
               </svg>
             )}
             {!showLoadingState ? "Generate" : ""}
@@ -97,7 +96,7 @@ export default function Page() {
                 alt={`Dall - E representation of: ${prompt}`}
                 className={cn(
                   "opacity-0 duration-1000 ease-in-out rounded-md shadow-md h-full object-cover",
-                  { "opacity-100": canShowImage }
+                  { "opacity-100": canShowImage },
                 )}
                 src={image}
                 fill={true}
@@ -115,12 +114,12 @@ export default function Page() {
                 "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transparent":
                   showLoadingState,
                 "opacity-0 shadow-none": canShowImage,
-              }
+              },
             )}
           >
             <div
               className={cn(
-                "w-full sm:w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center"
+                "w-full sm:w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center",
               )}
             >
               <p className="text-sm text-gray-400 uppercase">
