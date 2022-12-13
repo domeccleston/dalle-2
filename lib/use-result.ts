@@ -41,7 +41,6 @@ type UseResult<TResult> = {
 
 // can i say that 'generate' is a certain kind of string, i.e. has to start with '/api/?
 
-type 
 
 /**
  * useResult continuously polls a path with the ID returned from // useResult tries to resolve the result ... idk ..gotta think about this
