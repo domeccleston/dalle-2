@@ -23,7 +23,7 @@ export default function Page() {
    * Simple with path
    */
 
-  const { create, loading, result, error } = useResult({ path: "/api/art" });
+  const { create, loading, result, error } = useResult({ path: "/api/wrapped" });
   console.log({ loading, error, result });
 
   useEffect(() => {
