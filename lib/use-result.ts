@@ -53,9 +53,9 @@ export function useResult<TResult = unknown>(interval = 1000): UseResult<TResult
   const [result, setResult] = useState<TResult | null>(null);
   const [_id, setId] = useState();
 
-  async function resolveApiRoute(path)<Promise<any>>{
+  // async function resolveApiRoute(path)<Promise<any>>{
 
-  }
+  // }
 
   async function generate(path: string) {
     setLoading(true);
@@ -76,75 +76,3 @@ export function useResult<TResult = unknown>(interval = 1000): UseResult<TResult
 };
 
 
-
-// playground
-const r = useResult<{ x: string }>(5000)
-r.loading
-r.generate('/api/something')
-r.result
-
-
-// aha
-// trying to think it through need a full example
-// not finished :D
-// hmm... not even sure about this tbh
-// need to think more
-
-
-/**
- * Alternative proposal
- */
-
-export function useResultX<TProps, TResult>(opts: {
-  interval?: number
-  path: string,
-
-}) {
-
-
-  return { create, loading, result }
-}
-
-const { result, loading, create } = useResultX({ path: '/api/image' })
-
-// would be nice but how can we pass the prompt here?  
-// haha
-// the barrier is the need to use an api route
-
-// MAGIC
-await create({ prompt: "Draw rauchg riding a balloon" })
-
-
-// interesting and then we assume they're always passed as query params to apth?
-// yeah was gonna say that sounds better
-// i suppose we can assume that
-// yeah makes sense
-
-
-// ok let me write the typed hook for this, we can ask the others before making a final decision
-
-// nah it's all good lets do it, this is great thats the right spelling :D 
-
-// nah, I would use POST with json body, that's more flexible
-// also you might not want to show sensitive information in URL logs from GET params
-// JSX:
-
-export const Component....{
-
-  const { result, loading, create } = useResultX({ path: '/api/image' })
-
-  const [prompt, setPrompt] = useState("")
-  if (loading){
-  return <Loading/>
-}
-return result
-  ?
-  <div>{ result } < /div>
-  :
-  <form onsubmit(() => create({ prompt })) >
-  <input {/* setPrompt(...)*/ } />
-  <button>Create < /button>
-  < /form>
-
-
- }
