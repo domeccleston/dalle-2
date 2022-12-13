@@ -43,19 +43,17 @@ type UseResult<TArgs, TResult> = {
 }
 
 
-
-// I don't think they'd be able to change the qstash-proxy URL. 
-// All good let's keep it, doesn't hurt to have the option
 type Options<TArgs> = {
 
     /**
      * Polling interval in milliseconds
+     * 
+     * @default 2000
      */
     interval?: number
 
-
     /**
-     * Url to https://qstash-proxy.vercel.app
+     * Url to qstash proxy
      * 
      * @default `https://qstash-proxy.vercel.app`
      */
@@ -63,6 +61,8 @@ type Options<TArgs> = {
 
     /**
      * Stop polling after x milliseconds
+     * 
+     * @default 900_000 (15min)
      */
     timeout?: number
 } &
@@ -75,7 +75,7 @@ type Options<TArgs> = {
         path: string
     })
 
-export function useResult<TArgs, TResult>({
+export function useResult<TArgs extends Record<string, unknown> = {}, TResult = unknown>({
     interval = 2000,
     proxyUrl = "https://qstash-proxy.vercel.app",
     timeout = 900_000,// 15min
@@ -87,7 +87,7 @@ export function useResult<TArgs, TResult>({
      * This is different than `loading` because polling only starts after we receive the id
      * Loading already starts when we go ask for the id
      */
-    const [poll, setPoll] = useState(false)
+    const [polling, setPolling] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [result, setResult] = useState<TResult | null>(null)
@@ -95,7 +95,10 @@ export function useResult<TArgs, TResult>({
 
 
 
-
+    /**
+     * Either use the `fetcher` provided by the user or simply POST to the given path.
+     * If the user wants to add authorization etc, they should implement the `Fetcher`
+     */
     let fetcher: Fetcher<TArgs>
     if ("fetcher" in opts) {
         fetcher = opts.fetcher
@@ -103,7 +106,7 @@ export function useResult<TArgs, TResult>({
         fetcher = async (args: TArgs) => {
             const res = await fetch(opts.path, {
                 method: "POST",
-                headers:{
+                headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(args)
@@ -123,14 +126,14 @@ export function useResult<TArgs, TResult>({
 
 
     /**
-     * Small wrapper around the user provided createHandler to set states
+     * Wrap the fetcher and set states
      */
     const create = async (args: TArgs): Promise<void> => {
         try {
             setLoading(true)
             const { id } = await fetcher(args)
             setId(id)
-            setPoll(true)
+            setPolling(true)
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message)
@@ -145,17 +148,21 @@ export function useResult<TArgs, TResult>({
      * Stop polling after the defined timeout
      */
     useEffect(() => {
-        if (!poll) {
+        if (!polling) {
             return
         }
         const timeoutId = setTimeout(() => {
-            setPoll(false)
+            setPolling(false)
             setError("Timeout reached")
             setLoading(false)
         }, timeout)
         return () => clearTimeout(timeoutId)
-    }, [poll])
+    }, [polling])
 
+
+    /**
+     * Poll for the result
+     */
     useInterval(async () => {
         console.log("Polling..")
 
@@ -170,7 +177,7 @@ export function useResult<TArgs, TResult>({
                 const json = await res.json();
                 setLoading(false);
                 setResult(json);
-                setPoll(false)
+                setPolling(false)
                 break
 
             case 404:
@@ -182,12 +189,10 @@ export function useResult<TArgs, TResult>({
                 // unexpected error
                 setLoading(false);
                 setError(await res.text())
-                setPoll(false)
+                setPolling(false)
                 break
         }
-
-
-    }, interval, poll)
+    }, interval, polling)
 
 
 

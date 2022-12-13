@@ -24,11 +24,11 @@ export default function Page() {
   /**
    * Simple with path
    */
-  
 
-  const { create, loading, result, error } = useResult<{ prompt: string }, { data: { url: string }[] }>({ path: "/api/art" });
 
-  
+  const { create, loading, result, error } = useResult({ path: "/api/art" });
+  console.log({ loading, error, result })
+
   useEffect(() => {
     if (error) {
       alert(error)
