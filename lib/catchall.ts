@@ -18,7 +18,7 @@ export type Task = {
 }
 
 
-export function tasks(tasks: Task[]): NextApiHandler {
+export function queue(config: { tasks: Task[] }): NextApiHandler {
 
     return async (req: NextApiRequest, res: NextApiResponse) => {
         try {
@@ -27,7 +27,7 @@ export function tasks(tasks: Task[]): NextApiHandler {
             let taskName = typeof catchall === "string" ? catchall : catchall.at(0)
 
             console.log({ taskName })
-            const task = tasks.find(t => t.name === taskName)
+            const task = config.tasks.find(t => t.name === taskName)
             if (!task) {
                 res.status(404)
                 return
