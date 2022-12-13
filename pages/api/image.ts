@@ -1,34 +1,9 @@
-const QSTASH_PROXY = `https://qstash-proxy.vercel.app/api/queue`;
+import { Client } from "../../lib/client";
 
-class Task {
-  url: string;
-  headers: { [key: string]: string };
-  body: any;
-
-  constructor(url: string, config) {
-    this.url = url;
-    this.headers = config.headers;
-    this.body = config.body;
-  }
-
-  async enqueue() {
-    const res = await fetch(QSTASH_PROXY, {
-      method: 'POST',
-      headers: {
-        ...this.headers,
-        "Content-Type": "application/json",
-        "x-url": this.url,
-      },
-      body: JSON.stringify(this.body),
-    });
-    return res.json();
-  }
-}
-
-export default async function handler(req, res) {
+export default async function handler(req, res): Promise<{ id: string}> {
   const { prompt } = req.query;
 
-  const task = new Task("https://api.openai.com/v1/images/generations", {
+  const task = new Client("https://api.openai.com/v1/images/generations", {
     headers: {
       "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
     },

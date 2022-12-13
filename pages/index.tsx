@@ -3,7 +3,7 @@ import Image from "next/image";
 import cn from "classnames";
 import { Toaster, toast } from "react-hot-toast";
 
-import { useResult } from "../hooks/use-result";
+import { useResult } from "../lib/use-result";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
