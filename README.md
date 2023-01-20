@@ -8,6 +8,8 @@ This project will generate images from text using AI and uses QStash to manage s
 
 Link: [https://dalle-2.vercel.app](https://dalle-2.vercel.app)
 
+Due to high levels of usage, this is disabled: to generate images, you will need to run this locally.
+
 ## How it works
 
 It uses an ML model from OpenAI called DALLE-2 to generate an image using AI with just a text description. When text is submitted, the application proxies calls to the OpenAI API via QStash in `/api/image`. QStash sends responses to `/api/callback` in the form of an image URL, which is persisted to Upstash Redis. After calling the OpenAI API, the client polls Redis and loads the image on the page once it's available.
