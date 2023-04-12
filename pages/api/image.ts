@@ -21,6 +21,7 @@ export default async function handler(
         prompt,
         n: 1,
         size: "1024x1024",
+        response_format: "b64_json"
       }),
     });
     const json = await response.json();

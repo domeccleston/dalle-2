@@ -35,6 +35,8 @@ export default function Home() {
 
   const showLoadingState = loading || (image && !canShowImage);
 
+  console.log(image);
+
   return (
     <>
       <Head>
@@ -89,12 +91,11 @@ export default function Home() {
             <div className="w-full sm:w-[400px] h-[400px] rounded-md shadow-md relative">
               <img
                 alt={`Dall-E representation of: ${prompt}`}
-                className={cn(
-                  "rounded-md shadow-md h-full object-cover",
-                  { "opacity-100": canShowImage }
-                )}
+                className={cn("rounded-md shadow-md h-full object-cover", {
+                  "opacity-100": canShowImage,
+                })}
                 // src={image}
-                src={image}
+                src={`data:image/png;base64,${image}`}
               />
             </div>
 
