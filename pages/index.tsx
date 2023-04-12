@@ -86,22 +86,17 @@ export default function Home() {
             </button>
           </form>
           <div className="relative flex w-full items-center justify-center">
-            {image && (
-              <div className="w-full sm:w-[400px] h-[400px] rounded-md shadow-md relative">
-                <Image
-                  alt={`Dall-E representation of: ${prompt}`}
-                  className={cn(
-                    "opacity-0 duration-1000 ease-in-out rounded-md shadow-md h-full object-cover",
-                    { "opacity-100": canShowImage }
-                  )}
-                  src={image}
-                  fill={true}
-                  onLoadingComplete={() => {
-                    setCanShowImage(true);
-                  }}
-                />
-              </div>
-            )}
+            <div className="w-full sm:w-[400px] h-[400px] rounded-md shadow-md relative">
+              <img
+                alt={`Dall-E representation of: ${prompt}`}
+                className={cn(
+                  "rounded-md shadow-md h-full object-cover",
+                  { "opacity-100": canShowImage }
+                )}
+                // src={image}
+                src="/cat.jpeg"
+              />
+            </div>
 
             <div
               className={cn(
@@ -112,19 +107,7 @@ export default function Home() {
                   "opacity-0 shadow-none": canShowImage,
                 }
               )}
-            >
-              <div
-                className={cn(
-                  "w-full sm:w-[400px] h-[400px] bg-gray-200 rounded-md shadow-md flex items-center justify-center"
-                )}
-              >
-                <p className="uppercase text-sm text-gray-400">
-                  {showLoadingState
-                    ? "Generating image...."
-                    : "No image selected"}
-                </p>
-              </div>
-            </div>
+            ></div>
           </div>
         </div>
       </div>
