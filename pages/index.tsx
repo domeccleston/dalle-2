@@ -94,7 +94,7 @@ export default function Home() {
                   { "opacity-100": canShowImage }
                 )}
                 // src={image}
-                src="/cat.jpeg"
+                src={image}
               />
             </div>
 
