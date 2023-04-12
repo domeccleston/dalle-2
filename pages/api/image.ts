@@ -13,6 +13,7 @@ export default async function handler(
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
+        // Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         "upstash-forward-Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
         "Upstash-Callback": `${VERCEL_URL}/api/callback`,
@@ -21,11 +22,10 @@ export default async function handler(
         prompt,
         n: 1,
         size: "1024x1024",
-        response_format: "b64_json"
+        response_format: "b64_json",
       }),
     });
     const json = await response.json();
-    console.log(json)
     return res.status(202).json({ id: json.messageId });
   } catch (error) {
     return res
