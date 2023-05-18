@@ -14,13 +14,27 @@ export default function Dalle() {
     e.preventDefault();
     setLoading(true);
     toast("Generating your image...", { position: "top-center" });
-    const response = await fetch(`/api/image?prompt=${prompt}`);
+    const response = await fetch(
+      "https://api.openai.com/v1/images/generations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          prompt,
+          n: 1,
+          size: "1024x1024",
+          response_format: "b64_json",
+        }),
+      }
+    );
     const json = await response.json();
-    console.log(json);
 
     setLoading(false);
     setCanShowImage(true);
-    setImage(json.image);
+    setImage(json.data[0]["b64_json"]);
   }
 
   const showLoadingState = loading || (image && !canShowImage);
