@@ -1,10 +1,12 @@
-import { verifySignature } from "@upstash/qstash/nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 const QSTASH = `https://qstash.upstash.io/v1/publish/`;
 const DALL_E = "https://api.openai.com/v1/images/generations";
 const VERCEL_URL = "https://reserlive.vercel.app";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { prompt } = req.query;
   try {
     const response = await fetch(`${QSTASH + DALL_E}`, {
@@ -33,11 +35,3 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       .json({ message: error.message, type: "Internal server error" });
   }
 }
-
-export default verifySignature(handler);
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
