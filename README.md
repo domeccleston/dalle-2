@@ -6,7 +6,7 @@ This project will generate images from text using AI.
 
 ## Running Locally
 
-To run this locally, you'll need to sign up to https://openai.com and create a new API key ($18 of free credit is available for new users) and set OPENAI_API_KEY accordingly. You'll also need to set environment variables to connect to Upstash: you can do this by [installing the Vercel Upstash integration](https://vercel.com/integrations/upstash).
+To run this locally, you'll need to sign up to https://openai.com and create a new API key ($18 of free credit is available for new users) and set OPENAI_API_KEY accordingly.
 
 Then, run the application in the command line and it will be available at `http://localhost:3000`.
 
