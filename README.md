@@ -1,14 +1,8 @@
 # Dall-E 2 AI Art Generator
 
-This project will generate images from text using AI and uses QStash to manage serverless function timeouts.
+This project will generate images from text using AI.
 
 ![OG Image](/public/ogimage.png)
-
-## How it works
-
-It uses an ML model from OpenAI called DALLE-2 to generate an image using AI with just a text description. When text is submitted, the application proxies calls to the OpenAI API via QStash in `/api/image`. QStash sends responses to `/api/callback` in the form of an image URL, which is persisted to Upstash Redis. After calling the OpenAI API, the client polls Redis and loads the image on the page once it's available.
-
-Because API calls are handled by QStash rather than within the Vercel serverless function, they will not time out when deployed on Vercel's Hobby plan, which has a timeout limit of 10s.
 
 ## Running Locally
 
